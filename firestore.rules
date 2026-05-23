@@ -1,0 +1,57 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    function isSignedIn() { return request.auth != null; }
+    function isOwner(workspaceId) {
+      return isSignedIn() && get(/databases/$(database)/documents/workspaces/$(workspaceId)).data.ownerId == request.auth.uid;
+    }
+    function isValidId(id) { 
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); 
+    }
+
+    match /{document=**} {
+      allow read, write: if true; // MVP DEMO: Full open for the prototype backend
+    }
+
+    match /users/{userId} {
+      allow read: if isSignedIn() && request.auth.uid == userId;
+      allow create: if isSignedIn() && request.auth.uid == userId;
+      allow update: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    match /workspaces/{workspaceId} {
+      allow read: if isSignedIn() && resource.data.ownerId == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.ownerId == request.auth.uid;
+      allow update: if isSignedIn() && resource.data.ownerId == request.auth.uid && request.resource.data.ownerId == request.auth.uid;
+      allow delete: if isSignedIn() && resource.data.ownerId == request.auth.uid;
+
+      match /workflows/{workflowId} {
+        allow read: if isOwner(workspaceId);
+        allow create: if isOwner(workspaceId);
+        allow update: if isOwner(workspaceId);
+        allow delete: if isOwner(workspaceId);
+
+        match /events/{eventId} {
+          allow read: if isOwner(workspaceId);
+          // Allow unauthenticated create for the backend webhook processor, or direct webhook ingest if necessary
+          allow create: if true; 
+        }
+
+        match /rules/{ruleId} {
+          allow read: if isOwner(workspaceId);
+          allow create: if isOwner(workspaceId);
+          allow update: if isOwner(workspaceId);
+          allow delete: if isOwner(workspaceId);
+        }
+
+        match /alerts/{alertId} {
+          allow read: if isOwner(workspaceId);
+          allow create: if isOwner(workspaceId) || true; // Server will create alerts
+          allow update: if isOwner(workspaceId);
+        }
+      }
+    }
+  }
+}

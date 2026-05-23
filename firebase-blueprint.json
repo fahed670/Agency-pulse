@@ -1,0 +1,102 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["email", "createdAt"]
+    },
+    "Workspace": {
+      "title": "Workspace",
+      "description": "Tenant for the SAAS",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["name", "ownerId", "createdAt"]
+    },
+    "Workflow": {
+      "title": "Workflow",
+      "description": "Integration workflow (Make, Zapier, etc) configuration",
+      "type": "object",
+      "properties": {
+        "workspaceId": { "type": "string" },
+        "name": { "type": "string" },
+        "webhookId": { "type": "string" },
+        "status": { "type": "string", "enum": ["healthy", "warning", "critical"] },
+        "lastEventAt": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["workspaceId", "name", "webhookId", "status", "createdAt"]
+    },
+    "Rule": {
+      "title": "Rule",
+      "description": "Condition for triggering alerts",
+      "type": "object",
+      "properties": {
+        "workflowId": { "type": "string" },
+        "type": { "type": "string", "enum": ["no_events", "high_failure_rate"] },
+        "thresholdMinutes": { "type": "number" },
+        "failureRatePercentage": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["workflowId", "type", "createdAt"]
+    },
+    "Event": {
+      "title": "Event",
+      "description": "Event payload received from webhook",
+      "type": "object",
+      "properties": {
+        "workflowId": { "type": "string" },
+        "status": { "type": "string", "enum": ["success", "error"] },
+        "payload": { "type": "string" },
+        "receivedAt": { "type": "string" }
+      },
+      "required": ["workflowId", "status", "receivedAt"]
+    },
+    "Alert": {
+      "title": "Alert",
+      "description": "Triggered anomalies",
+      "type": "object",
+      "properties": {
+        "workflowId": { "type": "string" },
+        "message": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "read": { "type": "boolean" }
+      },
+      "required": ["workflowId", "message", "createdAt", "read"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User profiles"
+    },
+    "workspaces/{workspaceId}": {
+      "schema": { "$ref": "#/entities/Workspace" },
+      "description": "Workspaces belonging to users"
+    },
+    "workflows/{workflowId}": {
+      "schema": { "$ref": "#/entities/Workflow" },
+      "description": "Automation workflows"
+    },
+    "rules/{ruleId}": {
+      "schema": { "$ref": "#/entities/Rule" },
+      "description": "Rules for workflows"
+    },
+    "events/{eventId}": {
+      "schema": { "$ref": "#/entities/Event" },
+      "description": "Webhook events for workflows"
+    },
+    "alerts/{alertId}": {
+      "schema": { "$ref": "#/entities/Alert" },
+      "description": "Triggered alerts"
+    }
+  }
+}

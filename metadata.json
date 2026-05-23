@@ -1,0 +1,6 @@
+{
+  "name": "Agency Pulse",
+  "description": "A lightweight operational monitoring layer for marketing agencies to track automation workflows and detect failures.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
