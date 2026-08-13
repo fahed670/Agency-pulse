@@ -20,17 +20,33 @@ This is the simple project tracker for Space ID. It is written for product follo
 - Space details screen
 - Local Space deletion
 
+## Core camera responsibility
+
+The camera has **two distinct jobs** in Space ID:
+
+1. **Create/register a Space** — capture the physical space and collect the device location so a Space can be created.
+2. **Read a Space** — look at a physical Space that already has a Space ID, identify which Space it corresponds to, retrieve its digital contents, and present those contents to the user.
+
+The second capability is a core Space ID function, not an optional camera feature. The camera is therefore an input for both **Space creation** and **Space discovery/reading**.
+
+Reading a Space means that the app does not merely recognize an image. It must ultimately establish the relationship:
+
+**physical view → Space ID → Space record → contents associated with that Space**
+
+The contents may include the information, media, offers, advertisements, or other digital experiences assigned to that Space.
+
 ## What is next
 
 1. Connect Space records to the shared backend.
 2. Add the shared Space database and synchronization.
-3. Add map/explore using the device location and map service.
-4. Add physical-space identification and matching.
-5. Add AR-based placement/visualization using the phone's native AR capability.
-6. Add Space ownership and management.
-7. Add advertising inventory and campaign logic.
-8. Add impression/event recording.
-9. Add revenue and renewal rules.
+3. Build the camera-based **Read Space** flow: recognize a physical Space, resolve its Space ID, retrieve its contents, and display them.
+4. Add map/explore using the device location and map service.
+5. Add physical-space identification and matching.
+6. Add AR-based placement/visualization using the phone's native AR capability.
+7. Add Space ownership and management.
+8. Add advertising inventory and campaign logic.
+9. Add impression/event recording.
+10. Add revenue and renewal rules.
 
 ## Functional checklist
 
@@ -50,7 +66,9 @@ This is the simple project tracker for Space ID. It is written for product follo
 | Delete local Space | DONE |
 | Shared backend | NEXT |
 | Shared Space database | NEXT |
-| Synchronization | NEXT |
+| Read Space with camera | NEXT |
+| Resolve physical Space to Space ID | NEXT |
+| Retrieve Space contents | NEXT |
 | Map view | NEXT |
 | Physical-space matching | NEXT |
 | AR experience | NEXT |
