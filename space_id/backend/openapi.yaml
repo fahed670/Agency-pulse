@@ -1,0 +1,77 @@
+openapi: 3.0.3
+info:
+  title: Space ID API
+  version: 0.1.0
+  description: Initial shared API contract for canonical Spaces, content and events.
+paths:
+  /health:
+    get:
+      summary: Service health
+      responses:
+        '200':
+          description: Healthy
+  /spaces/{spaceId}:
+    get:
+      summary: Retrieve a canonical Space
+      parameters:
+        - in: path
+          name: spaceId
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Space record and published content references
+        '404':
+          description: Space not found
+  /spaces/nearby:
+    get:
+      summary: Find Spaces near a coordinate
+      parameters:
+        - { in: query, name: lat, required: true, schema: { type: number, format: double } }
+        - { in: query, name: lng, required: true, schema: { type: number, format: double } }
+        - { in: query, name: radiusMeters, required: true, schema: { type: number, format: double } }
+      responses:
+        '200':
+          description: Nearby Spaces
+  /spaces:
+    post:
+      summary: Submit a Space
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/SpaceSubmission' }
+      responses:
+        '201':
+          description: Space created
+  /events:
+    post:
+      summary: Record a Space ID event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/SpaceEvent' }
+      responses:
+        '202':
+          description: Event accepted
+components:
+  schemas:
+    SpaceSubmission:
+      type: object
+      required: [spaceId, latitude, longitude]
+      properties:
+        spaceId: { type: string }
+        latitude: { type: number, format: double }
+        longitude: { type: number, format: double }
+        accuracyMeters: { type: number, format: double }
+        imageReference: { type: string }
+    SpaceEvent:
+      type: object
+      required: [eventType, spaceId, occurredAt]
+      properties:
+        eventType: { type: string }
+        spaceId: { type: string }
+        occurredAt: { type: string, format: date-time }
+        contentVersion: { type: string }
+        campaignId: { type: string }
