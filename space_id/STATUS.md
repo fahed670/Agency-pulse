@@ -8,7 +8,7 @@ Space ID gives a physical place, surface, structure or area a persistent digital
 
 ## Current position
 
-**Stage:** Mobile foundation + local Space lifecycle + initial shared API boundary + initial Read Space flow
+**Stage:** Mobile foundation + local Space lifecycle + shared API contract + canonical spatial data model
 
 ## Working now
 
@@ -26,8 +26,10 @@ Space ID gives a physical place, surface, structure or area a persistent digital
 - Space details screen
 - Local Space deletion
 - Shared backend API boundary
-- Initial Space API service (`/health`, `/spaces`, `/spaces/:spaceId`, `/spaces/nearby`, `/events`)
+- Initial Space API service contract (`/health`, `/spaces`, `/spaces/:spaceId`, `/spaces/nearby`, `/events`)
 - OpenAPI contract for the shared API
+- PostgreSQL/PostGIS canonical schema for Spaces, content and events
+- Development seed data
 - Product specifications in `space_id/SPECIFICATIONS.md`
 - Human-readable build log in `space_id/BUILD_LOG.md`
 
@@ -67,8 +69,9 @@ Target relationship:
 | Delete local Space | DONE |
 | Product specifications | DONE |
 | Build tracking | DONE |
-| Shared backend API boundary | DONE |
-| Shared production database | NEXT |
+| Shared backend API contract | DONE |
+| Canonical PostGIS data model | DONE |
+| Shared production database connection | NEXT |
 | Mobile/backend synchronization | NEXT |
 | Canonical shared Space creation | NEXT |
 | Canonical Space content retrieval | NEXT |
@@ -93,7 +96,7 @@ If the phone already provides a capability, Space ID uses the phone's capability
 
 ## Important implementation boundary
 
-The current backend uses an in-memory store only to make the API behavior executable without prematurely locking the project to infrastructure. It is not the production database. The production spatial foundation will use the spatial data model defined by the product specification, with PostGIS as the operational candidate.
+The API contract and spatial schema are now defined, but the production database is not claimed as connected until a real database deployment and migration path are wired and tested. The SQL model uses PostgreSQL + PostGIS because Space ID's geographic operations require spatial data support.
 
 ## How to follow the project
 
@@ -101,6 +104,8 @@ The current backend uses an in-memory store only to make the API behavior execut
 - `space_id/SPECIFICATIONS.md` — complete product specifications and feature definition.
 - `space_id/BUILD_LOG.md` — implementation record.
 - `space_id/backend/openapi.yaml` — shared API contract.
+- `space_id/backend/schema.sql` — canonical spatial database model.
+- `space_id/backend/seed.sql` — development sample data.
 - `mobile/` — actual Flutter application.
 
 The development branch is `space-id-build`. The main branch is not the working development branch yet.
