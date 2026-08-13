@@ -1,7 +1,10 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
+import '../../core/models/space.dart';
 import '../../core/services/location_service.dart';
+import '../../core/services/space_repository.dart';
 
 class ScanPage extends StatefulWidget {
   const ScanPage({super.key});
@@ -16,6 +19,8 @@ class _ScanPageState extends State<ScanPage> {
   String? _error;
   bool _capturing = false;
   final LocationService _locationService = LocationService();
+  final SpaceRepository _spaceRepository = SpaceRepository();
+  final Uuid _uuid = const Uuid();
 
   @override
   void initState() {
@@ -56,28 +61,43 @@ class _ScanPageState extends State<ScanPage> {
     try {
       final location = await _locationService.getCurrentLocation();
       final image = await controller.takePicture();
+      final space = Space(
+        id: 'SP-${_uuid.v4().substring(0, 8).toUpperCase()}',
+        createdAt: DateTime.now().toUtc(),
+        latitude: location.latitude,
+        longitude: location.longitude,
+        accuracyMeters: location.accuracyMeters ?? 0,
+        imagePath: image.path,
+      );
+
+      await _spaceRepository.save(space);
 
       if (!mounted) return;
       await showModalBottomSheet<void>(
         context: context,
+        isScrollControlled: true,
         builder: (context) => SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.fromLTRB(24, 24, 24, 32),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Space captured', style: Theme.of(context).textTheme.titleLarge),
+                const Icon(Icons.check_circle_outline, size: 48),
                 const SizedBox(height: 12),
-                Text('Image: ${image.path}'),
-                const SizedBox(height: 6),
-                Text('Latitude: ${location.latitude.toStringAsFixed(6)}'),
-                Text('Longitude: ${location.longitude.toStringAsFixed(6)}'),
-                if (location.accuracyMeters != null)
-                  Text('Accuracy: ${location.accuracyMeters!.toStringAsFixed(1)} m'),
+                Text('Space created', style: Theme.of(context).textTheme.titleLarge),
+                const SizedBox(height: 8),
+                Text(
+                  space.id,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                const SizedBox(height: 16),
+                Text('Latitude: ${space.latitude.toStringAsFixed(6)}'),
+                Text('Longitude: ${space.longitude.toStringAsFixed(6)}'),
+                Text('Accuracy: ${space.accuracyMeters.toStringAsFixed(1)} m'),
                 const SizedBox(height: 16),
                 const Text(
-                  'Next: attach this capture to the Space ID creation workflow.',
+                  'This Space is stored locally on this device. The next step is connecting it to the shared Space ID service.',
                 ),
               ],
             ),
