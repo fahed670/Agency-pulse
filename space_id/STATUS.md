@@ -8,7 +8,7 @@ Space ID gives a physical place, surface, structure or area a persistent digital
 
 ## Current position
 
-**Stage:** Mobile foundation + offline-first local lifecycle + shared API synchronization + canonical spatial data model
+**Stage:** Mobile foundation + offline-first local lifecycle + shared API synchronization + PostgreSQL/PostGIS integration layer
 
 ## Working now
 
@@ -31,6 +31,10 @@ Space ID gives a physical place, surface, structure or area a persistent digital
 - `SPACE_READ` event submission from the mobile reader
 - API development seed Space (`SP-DEMO-001`)
 - Development event inspection endpoint
+- PostgreSQL/PostGIS connection layer in the backend
+- Local Docker PostGIS environment with schema and seed initialization
+- PostGIS nearby-space query when a database is connected
+- PostgreSQL persistence for Space records and events when a database is connected
 - OpenAPI contract for the shared API
 - PostgreSQL/PostGIS canonical schema for Spaces, content and events
 - Development seed data
@@ -79,10 +83,12 @@ Target relationship:
 | Build tracking | DONE |
 | Shared backend API contract | DONE |
 | Canonical PostGIS data model | DONE |
-| Shared production database connection | BLOCKED: database deployment/credentials not available |
+| PostgreSQL connection layer | DONE |
+| Local PostGIS Docker environment | DONE |
+| PostgreSQL persistence path | DONE (when DATABASE_URL is configured) |
+| PostGIS nearby query | DONE (when database is connected) |
+| Production database deployment | BLOCKED: no production database/credentials supplied |
 | Production mobile/backend synchronization | BLOCKED by production database deployment |
-| Canonical shared Space creation in PostGIS | BLOCKED by production database deployment |
-| Canonical Space content retrieval from PostGIS | BLOCKED by production database deployment |
 | Geographic map | NEXT |
 | Physical visual Space matching | NEXT |
 | AR experience | NEXT |
@@ -102,13 +108,11 @@ Target relationship:
 
 If the phone already provides a capability, Space ID uses the phone's capability through the appropriate platform API. We do not recreate camera, GPS, sensors, AR, media playback, or notification infrastructure unless Space ID-specific logic is required.
 
-## Important implementation boundary
+## Database boundary
 
-The current backend is an executable development service with an in-memory store and a seeded Space. It is intentionally not represented as the production database. The canonical production spatial model is PostgreSQL + PostGIS. Production database deployment, migrations, secrets and connection testing are the remaining infrastructure dependency before the shared service becomes durable.
+The backend now contains a real PostgreSQL/PostGIS integration path. A local PostGIS instance can be started through `space_id/backend/docker-compose.yml`; `schema.sql` and `seed.sql` initialize it. The backend uses PostgreSQL automatically when `DATABASE_URL` is present and healthy, and otherwise retains the in-memory fallback for development.
 
-## Configuration
-
-The mobile API base URL is configurable with the Flutter compile-time variable `SPACE_API_BASE_URL`. The default is suitable for an Android emulator (`http://10.0.2.2:8787`). A physical device or production build must provide an appropriate reachable API URL.
+The remaining infrastructure dependency is a durable production database deployment and its secure connection settings. Those cannot be invented inside the repository.
 
 ## How to follow the project
 
@@ -118,6 +122,7 @@ The mobile API base URL is configurable with the Flutter compile-time variable `
 - `space_id/backend/openapi.yaml` — shared API contract.
 - `space_id/backend/schema.sql` — canonical spatial database model.
 - `space_id/backend/seed.sql` — development sample data.
+- `space_id/backend/docker-compose.yml` — local PostGIS environment.
 - `mobile/` — actual Flutter application.
 
 The development branch is `space-id-build`. The main branch is not the working development branch yet.
