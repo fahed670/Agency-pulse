@@ -21,9 +21,26 @@ class SpaceRepository {
         .toList();
   }
 
+  Future<Space?> getById(String id) async {
+    final spaces = await getAll();
+    for (final space in spaces) {
+      if (space.id == id) return space;
+    }
+    return null;
+  }
+
   Future<void> save(Space space) async {
     final spaces = await getAll();
     final updated = [space, ...spaces.where((item) => item.id != space.id)];
+    final file = await _file();
+    await file.writeAsString(
+      jsonEncode(updated.map((item) => item.toJson()).toList()),
+    );
+  }
+
+  Future<void> delete(String id) async {
+    final spaces = await getAll();
+    final updated = spaces.where((item) => item.id != id).toList();
     final file = await _file();
     await file.writeAsString(
       jsonEncode(updated.map((item) => item.toJson()).toList()),
