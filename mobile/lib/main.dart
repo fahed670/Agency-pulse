@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'features/scan/scan_page.dart';
+
 void main() {
   runApp(const SpaceIdApp());
 }
@@ -29,31 +31,49 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Space ID')),
       body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.location_on_outlined, size: 72),
-                const SizedBox(height: 20),
-                Text(
-                  'Space ID',
-                  style: Theme.of(context).textTheme.headlineMedium,
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const Spacer(),
+              const Icon(Icons.location_on_outlined, size: 72),
+              const SizedBox(height: 20),
+              Text(
+                'Space ID',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Turn a physical place into an identifiable digital space.',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              const Spacer(),
+              FilledButton.icon(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const ScanPage()),
+                  );
+                },
+                icon: const Icon(Icons.camera_alt_outlined),
+                label: const Text('Scan a Space'),
+                style: FilledButton.styleFrom(
+                  minimumSize: const Size.fromHeight(54),
                 ),
-                const SizedBox(height: 8),
-                const Text(
-                  'Identify and interact with physical spaces.',
-                  textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 12),
+              OutlinedButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.map_outlined),
+                label: const Text('Explore Spaces'),
+                style: OutlinedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(54),
                 ),
-                const SizedBox(height: 32),
-                FilledButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(Icons.camera_alt_outlined),
-                  label: const Text('Scan a Space'),
-                ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 24),
+            ],
           ),
         ),
       ),
