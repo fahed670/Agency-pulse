@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'features/explore/explore_page.dart';
+import 'features/explore/nearby_spaces_page.dart';
 import 'features/read/read_space_page.dart';
 import 'features/scan/scan_page.dart';
 
@@ -54,35 +55,38 @@ class HomePage extends StatelessWidget {
               ),
               const Spacer(),
               FilledButton.icon(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const ReadSpacePage()),
-                  );
-                },
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const ReadSpacePage()),
+                ),
                 icon: const Icon(Icons.center_focus_strong),
                 label: const Text('Read a Space'),
                 style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(54)),
               ),
               const SizedBox(height: 12),
               OutlinedButton.icon(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const ScanPage()),
-                  );
-                },
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const ScanPage()),
+                ),
                 icon: const Icon(Icons.add_a_photo_outlined),
                 label: const Text('Create a Space'),
                 style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(54)),
               ),
               const SizedBox(height: 12),
-              TextButton.icon(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const ExplorePage()),
-                  );
-                },
+              FilledButton.tonalIcon(
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const NearbySpacesPage()),
+                ),
                 icon: const Icon(Icons.map_outlined),
-                label: const Text('Explore Spaces'),
+                label: const Text('Nearby Spaces'),
+                style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(50)),
+              ),
+              const SizedBox(height: 4),
+              TextButton.icon(
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const ExplorePage()),
+                ),
+                icon: const Icon(Icons.inventory_2_outlined),
+                label: const Text('My Spaces'),
               ),
               const SizedBox(height: 24),
             ],
