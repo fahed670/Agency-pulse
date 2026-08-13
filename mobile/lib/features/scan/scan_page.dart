@@ -4,6 +4,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../core/models/space.dart';
 import '../../core/services/location_service.dart';
+import '../../core/services/space_api_service.dart';
 import '../../core/services/space_repository.dart';
 
 class ScanPage extends StatefulWidget {
@@ -20,6 +21,7 @@ class _ScanPageState extends State<ScanPage> {
   bool _capturing = false;
   final LocationService _locationService = LocationService();
   final SpaceRepository _spaceRepository = SpaceRepository();
+  final SpaceApiService _api = SpaceApiService();
   final Uuid _uuid = const Uuid();
 
   @override
@@ -70,7 +72,16 @@ class _ScanPageState extends State<ScanPage> {
         imagePath: image.path,
       );
 
+      // Persist locally first so creation remains usable when connectivity is absent.
       await _spaceRepository.save(space);
+
+      var syncMessage = 'Saved locally. It will be available on this device.';
+      try {
+        await _api.createSpace(space);
+        syncMessage = 'Space created and synchronized with the shared Space ID service.';
+      } catch (_) {
+        syncMessage = 'Space created locally. Shared synchronization is pending connectivity.';
+      }
 
       if (!mounted) return;
       await showModalBottomSheet<void>(
@@ -87,18 +98,13 @@ class _ScanPageState extends State<ScanPage> {
                 const SizedBox(height: 12),
                 Text('Space created', style: Theme.of(context).textTheme.titleLarge),
                 const SizedBox(height: 8),
-                Text(
-                  space.id,
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
+                Text(space.id, style: Theme.of(context).textTheme.headlineSmall),
                 const SizedBox(height: 16),
                 Text('Latitude: ${space.latitude.toStringAsFixed(6)}'),
                 Text('Longitude: ${space.longitude.toStringAsFixed(6)}'),
                 Text('Accuracy: ${space.accuracyMeters.toStringAsFixed(1)} m'),
                 const SizedBox(height: 16),
-                const Text(
-                  'This Space is stored locally on this device. The next step is connecting it to the shared Space ID service.',
-                ),
+                Text(syncMessage),
               ],
             ),
           ),
