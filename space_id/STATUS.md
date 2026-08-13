@@ -8,7 +8,7 @@ Space ID gives a physical place, surface, structure or area a persistent digital
 
 ## Current position
 
-**Stage:** Mobile foundation + offline-first local lifecycle + shared API synchronization + PostgreSQL/PostGIS integration layer
+**Stage:** Mobile foundation + offline-first local lifecycle + shared API synchronization + PostgreSQL/PostGIS integration + geographic discovery
 
 ## Working now
 
@@ -35,6 +35,8 @@ Space ID gives a physical place, surface, structure or area a persistent digital
 - Local Docker PostGIS environment with schema and seed initialization
 - PostGIS nearby-space query when a database is connected
 - PostgreSQL persistence for Space records and events when a database is connected
+- Nearby Spaces mobile experience using device location + shared nearby API
+- Cross-platform geographic map view for nearby Spaces
 - OpenAPI contract for the shared API
 - PostgreSQL/PostGIS canonical schema for Spaces, content and events
 - Development seed data
@@ -79,17 +81,16 @@ Target relationship:
 | Explore Spaces | DONE (local) |
 | Space details | DONE (local) |
 | Delete local Space | DONE |
-| Product specifications | DONE |
-| Build tracking | DONE |
 | Shared backend API contract | DONE |
 | Canonical PostGIS data model | DONE |
 | PostgreSQL connection layer | DONE |
 | Local PostGIS Docker environment | DONE |
 | PostgreSQL persistence path | DONE (when DATABASE_URL is configured) |
 | PostGIS nearby query | DONE (when database is connected) |
+| Nearby Spaces API experience | DONE |
+| Geographic map | DONE (development map) |
 | Production database deployment | BLOCKED: no production database/credentials supplied |
 | Production mobile/backend synchronization | BLOCKED by production database deployment |
-| Geographic map | NEXT |
 | Physical visual Space matching | NEXT |
 | AR experience | NEXT |
 | Space ownership | NEXT |
@@ -113,6 +114,10 @@ If the phone already provides a capability, Space ID uses the phone's capability
 The backend now contains a real PostgreSQL/PostGIS integration path. A local PostGIS instance can be started through `space_id/backend/docker-compose.yml`; `schema.sql` and `seed.sql` initialize it. The backend uses PostgreSQL automatically when `DATABASE_URL` is present and healthy, and otherwise retains the in-memory fallback for development.
 
 The remaining infrastructure dependency is a durable production database deployment and its secure connection settings. Those cannot be invented inside the repository.
+
+## Geographic discovery boundary
+
+The mobile app now uses the device's location capability, calls the shared nearby-Spaces API, and renders the returned Spaces on a cross-platform map. The map is a development discovery surface; it does not yet perform physical visual recognition of a Space.
 
 ## How to follow the project
 
