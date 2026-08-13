@@ -2,11 +2,16 @@
 
 This is the simple project tracker for Space ID. It is written for product follow-up, not for developers.
 
+## Product definition
+
+Space ID gives a physical place, surface, structure or area a persistent digital identity. The camera is a core interface for both creating a Space and reading an existing Space.
+
 ## Current position
 
-**Stage:** Core Space creation + local exploration + Space management
+**Stage:** Core Space creation + local exploration + Space management + product specification baseline
 
-**Working now:**
+## Working now
+
 - Flutter application structure for Android/iOS
 - Space ID home screen
 - Scan Space screen
@@ -19,6 +24,7 @@ This is the simple project tracker for Space ID. It is written for product follo
 - Explore Spaces screen
 - Space details screen
 - Local Space deletion
+- Product specifications and complete feature definition in `space_id/SPECIFICATIONS.md`
 
 ## Core camera responsibility
 
@@ -27,26 +33,32 @@ The camera has **two distinct jobs** in Space ID:
 1. **Create/register a Space** — capture the physical space and collect the device location so a Space can be created.
 2. **Read a Space** — look at a physical Space that already has a Space ID, identify which Space it corresponds to, retrieve its digital contents, and present those contents to the user.
 
-The second capability is a core Space ID function, not an optional camera feature. The camera is therefore an input for both **Space creation** and **Space discovery/reading**.
-
-Reading a Space means that the app does not merely recognize an image. It must ultimately establish the relationship:
+Reading a Space is a core Space ID function. The target relationship is:
 
 **physical view → Space ID → Space record → contents associated with that Space**
 
-The contents may include the information, media, offers, advertisements, or other digital experiences assigned to that Space.
+Contents may include information, images, video, offers, advertisements, links/actions, or other digital experiences assigned to the Space.
 
-## What is next
+## Product capabilities defined
 
-1. Connect Space records to the shared backend.
-2. Add the shared Space database and synchronization.
-3. Build the camera-based **Read Space** flow: recognize a physical Space, resolve its Space ID, retrieve its contents, and display them.
-4. Add map/explore using the device location and map service.
-5. Add physical-space identification and matching.
-6. Add AR-based placement/visualization using the phone's native AR capability.
-7. Add Space ownership and management.
-8. Add advertising inventory and campaign logic.
-9. Add impression/event recording.
-10. Add revenue and renewal rules.
+- Space identity and lifecycle
+- Space creation and registration
+- Camera-based Space reading/discovery
+- Physical-space recognition and matching
+- Space content container
+- Geographic discovery and map
+- Space ownership and management
+- Advertising inventory
+- Campaign management
+- Deterministic ad decision engine
+- Image/video content understanding and adaptation
+- Event tracking
+- Performance and revenue data
+- Market and demand analytics
+- Privacy by Design
+- Native-device capability integration
+- AR presentation when appropriate
+- Global geographic hierarchy: World → Country → Emirate/State → City → District → Building → Space
 
 ## Functional checklist
 
@@ -64,32 +76,40 @@ The contents may include the information, media, offers, advertisements, or othe
 | Explore Spaces | DONE (local) |
 | Space details | DONE (local) |
 | Delete local Space | DONE |
+| Product specifications | DONE |
 | Shared backend | NEXT |
 | Shared Space database | NEXT |
+| Synchronization | NEXT |
 | Read Space with camera | NEXT |
 | Resolve physical Space to Space ID | NEXT |
 | Retrieve Space contents | NEXT |
+| Display Space contents | NEXT |
 | Map view | NEXT |
 | Physical-space matching | NEXT |
 | AR experience | NEXT |
 | Space ownership | NEXT |
 | Advertising inventory | NEXT |
 | Campaign management | NEXT |
+| Deterministic ad decision engine | NEXT |
+| Image/video content intelligence | NEXT |
 | Impression/event tracking | NEXT |
 | Revenue calculation | NEXT |
 | Renewal management | NEXT |
-
-## Important distinction
-
-A local Space is now a real application record, but it is not yet a globally shared Space. The next backend step will make Space IDs available across devices and users.
+| Long-term analytics | NEXT |
+| Demand/market intelligence | NEXT |
 
 ## Architecture rule
 
 If the phone already provides a capability, Space ID uses the phone's capability through the appropriate platform API. We do not recreate camera, GPS, sensors, AR, media playback, or notification infrastructure unless Space ID-specific logic is required.
 
+## Source of product definition
+
+The complete product definition is based on the Space ID specification supplied in this conversation. The source establishes the core architecture around camera/AR, spatial understanding, PostGIS, geographic search, AI vision, advertising decisioning, event infrastructure, analytics, privacy, global geographic hierarchy and data-driven market intelligence.
+
 ## How to follow the project
 
 - `space_id/STATUS.md` — this page: what works and what remains.
+- `space_id/SPECIFICATIONS.md` — the complete product specifications and feature definition.
 - `space_id/README.md` — project architecture and principles.
 - `mobile/` — the actual Flutter application.
 
