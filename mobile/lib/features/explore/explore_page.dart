@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/models/space.dart';
 import '../../core/services/space_repository.dart';
+import 'space_details_page.dart';
 
 class ExplorePage extends StatefulWidget {
   const ExplorePage({super.key});
@@ -17,10 +18,17 @@ class _ExplorePageState extends State<ExplorePage> {
   @override
   void initState() {
     super.initState();
-    _spaces = _repository.getAll();
+    _refresh();
   }
 
-  void _refresh() => setState(() => _spaces = _repository.getAll());
+  void _refresh() => _spaces = _repository.getAll();
+
+  Future<void> _open(Space space) async {
+    await Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => SpaceDetailsPage(space: space)),
+    );
+    if (mounted) setState(_refresh);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +36,7 @@ class _ExplorePageState extends State<ExplorePage> {
       appBar: AppBar(
         title: const Text('Explore Spaces'),
         actions: [
-          IconButton(onPressed: _refresh, icon: const Icon(Icons.refresh)),
+          IconButton(onPressed: () => setState(_refresh), icon: const Icon(Icons.refresh)),
         ],
       ),
       body: FutureBuilder<List<Space>>(
@@ -37,7 +45,6 @@ class _ExplorePageState extends State<ExplorePage> {
           if (snapshot.connectionState != ConnectionState.done) {
             return const Center(child: CircularProgressIndicator());
           }
-
           if (snapshot.hasError) {
             return Center(child: Text('Unable to load Spaces: ${snapshot.error}'));
           }
@@ -71,9 +78,11 @@ class _ExplorePageState extends State<ExplorePage> {
                   title: Text(space.id),
                   subtitle: Text(
                     '${space.latitude.toStringAsFixed(5)}, ${space.longitude.toStringAsFixed(5)}\n'
-                    'Accuracy ${space.accuracyMeters.toStringAsFixed(1)} m',
+                    'Accuracy ${space.accuracyMeters?.toStringAsFixed(1) ?? '—'} m',
                   ),
                   isThreeLine: true,
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => _open(space),
                 ),
               );
             },
