@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'features/explore/explore_page.dart';
+import 'features/read/read_space_page.dart';
 import 'features/scan/scan_page.dart';
 
 void main() {
@@ -55,17 +56,26 @@ class HomePage extends StatelessWidget {
               FilledButton.icon(
                 onPressed: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const ScanPage()),
+                    MaterialPageRoute(builder: (_) => const ReadSpacePage()),
                   );
                 },
-                icon: const Icon(Icons.camera_alt_outlined),
-                label: const Text('Scan a Space'),
-                style: FilledButton.styleFrom(
-                  minimumSize: const Size.fromHeight(54),
-                ),
+                icon: const Icon(Icons.center_focus_strong),
+                label: const Text('Read a Space'),
+                style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(54)),
               ),
               const SizedBox(height: 12),
               OutlinedButton.icon(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const ScanPage()),
+                  );
+                },
+                icon: const Icon(Icons.add_a_photo_outlined),
+                label: const Text('Create a Space'),
+                style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(54)),
+              ),
+              const SizedBox(height: 12),
+              TextButton.icon(
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (_) => const ExplorePage()),
@@ -73,9 +83,6 @@ class HomePage extends StatelessWidget {
                 },
                 icon: const Icon(Icons.map_outlined),
                 label: const Text('Explore Spaces'),
-                style: OutlinedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(54),
-                ),
               ),
               const SizedBox(height: 24),
             ],
