@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'features/explore/explore_page.dart';
 import 'features/scan/scan_page.dart';
 
 void main() {
@@ -65,7 +66,11 @@ class HomePage extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               OutlinedButton.icon(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const ExplorePage()),
+                  );
+                },
                 icon: const Icon(Icons.map_outlined),
                 label: const Text('Explore Spaces'),
                 style: OutlinedButton.styleFrom(
