@@ -1,20 +1,25 @@
 {
   "name": "space-id-backend",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
     "dev": "tsx src/server.ts",
-    "start": "tsx src/server.ts"
+    "start": "tsx src/server.ts",
+    "db:up": "docker compose up -d postgres",
+    "db:down": "docker compose down",
+    "db:reset": "docker compose down -v && docker compose up -d postgres"
   },
   "dependencies": {
     "express": "^5.1.0",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "pg": "^8.16.3"
   },
   "devDependencies": {
     "tsx": "^4.19.4",
     "typescript": "^5.9.2",
     "@types/express": "^5.0.3",
-    "@types/cors": "^2.8.19"
+    "@types/cors": "^2.8.19",
+    "@types/pg": "^8.15.5"
   }
 }
