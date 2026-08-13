@@ -4,7 +4,7 @@ This is the simple project tracker for Space ID. It is written for product follo
 
 ## Current position
 
-**Stage:** Core Space creation + local exploration
+**Stage:** Core Space creation + local exploration + Space management
 
 **Working now:**
 - Flutter application structure for Android/iOS
@@ -16,7 +16,9 @@ This is the simple project tracker for Space ID. It is written for product follo
 - Creation of a real local Space record
 - Automatic Space ID generation
 - Local persistence of Space records on the device
-- Explore Spaces screen for records stored on the device
+- Explore Spaces screen
+- Space details screen
+- Local Space deletion
 
 ## What is next
 
@@ -44,6 +46,8 @@ This is the simple project tracker for Space ID. It is written for product follo
 | Save Space | DONE (local) |
 | Retrieve Space | DONE (local) |
 | Explore Spaces | DONE (local) |
+| Space details | DONE (local) |
+| Delete local Space | DONE |
 | Shared backend | NEXT |
 | Shared Space database | NEXT |
 | Synchronization | NEXT |
