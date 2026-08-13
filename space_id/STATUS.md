@@ -1,10 +1,10 @@
 # Space ID — Development Status
 
-This page is the simple project tracker for Space ID. It is written for product follow-up, not for developers.
+This is the simple project tracker for Space ID. It is written for product follow-up, not for developers.
 
 ## Current position
 
-**Stage:** Foundation + first working device flow
+**Stage:** Core Space creation + local exploration
 
 **Working now:**
 - Flutter application structure for Android/iOS
@@ -13,20 +13,22 @@ This page is the simple project tracker for Space ID. It is written for product 
 - Phone camera preview
 - Photo capture
 - Device location permission and current location retrieval
-- Capture result showing image path and latitude/longitude/accuracy
+- Creation of a real local Space record
+- Automatic Space ID generation
+- Local persistence of Space records on the device
+- Explore Spaces screen for records stored on the device
 
 ## What is next
 
-1. Convert a capture into a real Space record.
-2. Generate a permanent Space ID.
-3. Store and retrieve Space records.
-4. Add the map/explore experience.
-5. Add physical-space identification and matching.
-6. Add AR-based placement/visualization using the phone's native AR capability.
-7. Add Space ownership and management.
-8. Add advertising inventory and campaign logic.
-9. Add impression/event recording.
-10. Add revenue and renewal rules.
+1. Connect Space records to the shared backend.
+2. Add the shared Space database and synchronization.
+3. Add map/explore using the device location and map service.
+4. Add physical-space identification and matching.
+5. Add AR-based placement/visualization using the phone's native AR capability.
+6. Add Space ownership and management.
+7. Add advertising inventory and campaign logic.
+8. Add impression/event recording.
+9. Add revenue and renewal rules.
 
 ## Functional checklist
 
@@ -37,12 +39,14 @@ This page is the simple project tracker for Space ID. It is written for product 
 | Open camera | DONE |
 | Capture image | DONE |
 | Read device location | DONE |
-| Combine capture + location | DONE (temporary capture result) |
-| Create persistent Space | NEXT |
-| Generate Space ID | NEXT |
-| Save Space | NEXT |
-| Retrieve Space | NEXT |
-| Explore Spaces | NEXT |
+| Create Space record | DONE (local) |
+| Generate Space ID | DONE (local) |
+| Save Space | DONE (local) |
+| Retrieve Space | DONE (local) |
+| Explore Spaces | DONE (local) |
+| Shared backend | NEXT |
+| Shared Space database | NEXT |
+| Synchronization | NEXT |
 | Map view | NEXT |
 | Physical-space matching | NEXT |
 | AR experience | NEXT |
@@ -52,6 +56,10 @@ This page is the simple project tracker for Space ID. It is written for product 
 | Impression/event tracking | NEXT |
 | Revenue calculation | NEXT |
 | Renewal management | NEXT |
+
+## Important distinction
+
+A local Space is now a real application record, but it is not yet a globally shared Space. The next backend step will make Space IDs available across devices and users.
 
 ## Architecture rule
 
